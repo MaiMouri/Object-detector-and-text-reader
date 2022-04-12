@@ -2,3 +2,5 @@ streamlit
 azure-cognitiveservices-vision-computervision
 pillow
 google-cloud-texttospeech
+os
+google-auth
