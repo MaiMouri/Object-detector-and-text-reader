@@ -14,6 +14,8 @@ import streamlit as st
 credentials = service_account.Credentials.from_service_account_info(
     st.secrets["gcp_service_account"])
 
+st.write(st.secrets["gcp_service_account"])
+
 
 def data_transport(words):
     input_data = words
