@@ -7,6 +7,10 @@ import io
 import streamlit as st
 
 # os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'secret.json'
+# test = st.secrets["gcp_service_account"]
+
+# os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = st.secrets[
+#     "gcp_service_account"]
 credentials = service_account.Credentials.from_service_account_info(
     st.secrets["gcp_service_account"])
 
