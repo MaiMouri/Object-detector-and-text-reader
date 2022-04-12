@@ -16,6 +16,8 @@ import streamlit as st
 
 import main
 
+st.set_page_config(layout="wide")
+
 with open('secret.json') as f:
     secret = json.load(f)
 KEY = secret['KEY']
@@ -71,57 +73,66 @@ def detect_objects(filepath):
     return objects
 
 
-st.title("Object detector")
-uploaded_file = st.file_uploader('Choose an image...', type=['jpg', 'png'])
+placeholder = st.empty()
+# プレースホルダにコンテナを追加する
+container = placeholder.container()
+# コンテナにカラムを追加する
+col1, col2 = container.columns(2)
+# それぞれのカラムに書き込む
+with col1:
+    # st.write('Hello, World')
+    st.title("Object Detector")
+    uploaded_file = st.file_uploader('Choose an image...', type=['jpg', 'png'])
 
-st.title("Words Reader")
-words_file = st.file_uploader('Choose an image...',
-                              type=['jpg', 'png', 'jpeg'],
-                              key=['words'])
+    if uploaded_file is not None:
+        img = Image.open(uploaded_file)
+        img_path = f'img/{uploaded_file.name}'
+        img.save(img_path)
+        objects = detect_objects(img_path)
 
-if uploaded_file is not None:
-    img = Image.open(uploaded_file)
-    img_path = f'img/{uploaded_file.name}'
-    img.save(img_path)
-    objects = detect_objects(img_path)
+        draw = ImageDraw.Draw(img)
+        for object in objects:
+            x = object.rectangle.x
+            y = object.rectangle.y
+            w = object.rectangle.w
+            h = object.rectangle.h
+            caption = object.object_property
 
-    draw = ImageDraw.Draw(img)
-    for object in objects:
-        x = object.rectangle.x
-        y = object.rectangle.y
-        w = object.rectangle.w
-        h = object.rectangle.h
-        caption = object.object_property
+            font = ImageFont.truetype(font='./Helvetica.ttf', size=50)
+            text_w, text_h = draw.textsize(caption, font=font)
 
-        font = ImageFont.truetype(font='./Helvetica.ttf', size=50)
-        text_w, text_h = draw.textsize(caption, font=font)
+            draw.rectangle([(x, y), (x + text_w, text_h + y)],
+                           fill='green',
+                           outline='green',
+                           width=5)
+            draw.text([x, y], caption, fill='white', font=font)
+            draw.rectangle([(x, y), (x + w, h + y)],
+                           fill=None,
+                           outline='green',
+                           width=5)
+        st.image(img)
 
-        draw.rectangle([(x, y), (x + text_w, text_h + y)],
-                       fill=None,
-                       outline='green',
-                       width=5)
-        draw.text([x, y], caption, fill='white', font=font)
-        draw.rectangle([(x, y), (x + w, h + y)],
-                       fill=None,
-                       outline='green',
-                       width=5)
-    st.image(img)
+        tags_name = get_tags(img_path)
+        tags_name = ', '.join(tags_name)
+        st.markdown('Detected content tags')
+        st.markdown(f'> {tags_name}')
 
-    tags_name = get_tags(img_path)
-    tags_name = ', '.join(tags_name)
-    st.markdown('Detected content tags')
-    st.markdown(f'> {tags_name}')
+with col2:
+    # st.write('Konnichiwa, Sekai')
+    st.title("Words Reader")
+    words_file = st.file_uploader('Choose an image...',
+                                  type=['jpg', 'png', 'jpeg'],
+                                  key=['words'])
+    if words_file is not None:
+        words_img = Image.open(words_file)
+        words_img_path = f'img/{words_file.name}'
+        words_img.save(words_img_path)
+        words = read_words(words_img_path)
 
-if words_file is not None:
-    words_img = Image.open(words_file)
-    words_img_path = f'img/{words_file.name}'
-    words_img.save(words_img_path)
-    words = read_words(words_img_path)
+        st.image(words_img)
 
-    st.image(words_img)
+        words = ', '.join(words)
+        st.markdown('Words...')
+        st.markdown(f'> {words}')
 
-    words = ', '.join(words)
-    st.markdown('Words...')
-    st.markdown(f'> {words}')
-
-    main.data_transport(words)
+        main.data_transport(words)
