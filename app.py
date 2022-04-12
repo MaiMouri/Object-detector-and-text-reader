@@ -18,11 +18,12 @@ import main
 
 st.set_page_config(layout="wide")
 
-with open('secret.json') as f:
-    secret = json.load(f)
-KEY = secret['KEY']
-ENDPOINT = secret['ENDPOINT']
-
+# with open('secret.json') as f:
+#     secret = json.load(f)
+# KEY = secret['KEY']
+# ENDPOINT = secret['ENDPOINT']
+KEY = st.secrets.AzureApiKey.key
+ENDPOINT = st.secrets.AzureApiKey.endpoint
 computervision_client = ComputerVisionClient(ENDPOINT,
                                              CognitiveServicesCredentials(KEY))
 
