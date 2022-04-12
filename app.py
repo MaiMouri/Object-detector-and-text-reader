@@ -22,8 +22,8 @@ st.set_page_config(layout="wide")
 #     secret = json.load(f)
 # KEY = secret['KEY']
 # ENDPOINT = secret['ENDPOINT']
-KEY = st.secrets.key
-ENDPOINT = st.secrets.endpoint
+KEY = st.secrets.AzureApiKey.key
+ENDPOINT = st.secrets.AzureApiKey.endpoint
 computervision_client = ComputerVisionClient(ENDPOINT,
                                              CognitiveServicesCredentials(KEY))
 
@@ -81,7 +81,6 @@ container = placeholder.container()
 col1, col2 = container.columns(2)
 # それぞれのカラムに書き込む
 with col1:
-    # st.write('Hello, World')
     st.title("Object Detector")
     uploaded_file = st.file_uploader('Choose an image...', type=['jpg', 'png'])
 
