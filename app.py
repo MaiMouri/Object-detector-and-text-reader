@@ -22,8 +22,8 @@ st.set_page_config(layout="wide")
 #     secret = json.load(f)
 # KEY = secret['KEY']
 # ENDPOINT = secret['ENDPOINT']
-KEY = st.secrets.AzureApiKey.key
-ENDPOINT = st.secrets.AzureApiKey.endpoint
+KEY = st.secrets.key
+ENDPOINT = st.secrets.endpoint
 computervision_client = ComputerVisionClient(ENDPOINT,
                                              CognitiveServicesCredentials(KEY))
 
