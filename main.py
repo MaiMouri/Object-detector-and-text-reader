@@ -6,7 +6,9 @@ from google.oauth2 import service_account
 import io
 import streamlit as st
 
+
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'secret.json'
+
 
 
 def data_transport(words):
