@@ -1,6 +1,8 @@
 streamlit
 azure-cognitiveservices-vision-computervision
 pillow
+google
 google-cloud-texttospeech
 google-auth
+
 
