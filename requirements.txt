@@ -3,3 +3,5 @@ azure-cognitiveservices-vision-computervision
 pillow
 google-cloud-texttospeech
 google-auth
+google.oauth2
+google
