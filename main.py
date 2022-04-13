@@ -6,13 +6,9 @@ from google.oauth2 import service_account
 import io
 import streamlit as st
 
-# os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'secret.json'
-# test = st.secrets["gcp_service_account"]
 
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = st.secrets[
-    "gcp_service_account"]
-# credentials = service_account.Credentials.from_service_account_info(
-#     st.secrets["gcp_service_account"])
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'secret.json'
+
 
 
 def data_transport(words):
@@ -42,8 +38,8 @@ def synthesize_speech(text, lang='英語', gender='default'):
         'neutral': texttospeech.SsmlVoiceGender.NEUTRAL
     }
     lang_code = {'英語': 'en-US', '日本語': 'ja-JP'}
-
     client = texttospeech.TextToSpeechClient()
+
     synthesis_input = texttospeech.SynthesisInput(text=text)
     voice = texttospeech.VoiceSelectionParams(language_code=lang_code[lang],
                                               ssml_gender=gender_type[gender])
